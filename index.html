@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Health Unit 2 Escape Room</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1b1b1b;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .game-container {
+      background: #2a2a2a;
+      padding: 20px;
+      width: 420px;
+      border-radius: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    h1 { margin-bottom: 10px; }
+    .room { font-size: 18px; margin-bottom: 10px; }
+    .question { font-weight: bold; margin-bottom: 10px; }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #444;
+      color: #fff;
+    }
+    .answers button:hover { background: #666; }
+    .status { margin-top: 10px; font-size: 14px; }
+    .win { color: #4caf50; font-size: 20px; }
+    .fail { color: #f44336; }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>🏃‍♂️ Health Escape Room</h1>
+    <div class="room" id="room"></div>
+    <div id="game"></div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <script>
+    const rooms = [
+      { name: "Room 1: Health Influences", q: "Which is a positive health influence?", a: ["Smoking", "Exercise", "Drugs", "Skipping sleep"], c: 1 },
+      { name: "Room 2: Urinary System", q: "Which organ stores urine?", a: ["Kidney", "Bladder", "Liver", "Heart"], c: 1 },
+      { name: "Room 3: Urinary System", q: "What system removes waste from the body?", a: ["Respiratory", "Digestive", "Urinary", "Nervous"], c: 2 },
+      { name: "Room 4: Chronic Diseases", q: "What is a chronic disease?", a: ["Short-term illness", "Long-lasting illness", "Injury", "Infection"], c: 1 },
+      { name: "Room 5: Chronic Diseases", q: "Which is a chronic disease?", a: ["Cold", "Flu", "Asthma", "Stomach bug"], c: 2 },
+      { name: "Room 6: Infectious Disease", q: "What causes infectious diseases?", a: ["Bacteria and viruses", "Exercise", "Sleep", "Healthy food"], c: 0 },
+      { name: "Room 7: Infectious Disease", q: "Which helps prevent infectious disease?", a: ["Not washing hands", "Sharing drinks", "Vaccines", "Staying up late"], c: 2 },
+      { name: "Room 8: Fitness Planning", q: "What does FITT stand for?", a: ["Fun, Intensity, Time, Test", "Frequency, Intensity, Time, Type", "Fast, Intense, Tough, Training", "Fitness, Instruction, Training, Time"], c: 1 },
+      { name: "Room 9: Fitness Planning", q: "How often you exercise is called?", a: ["Intensity", "Time", "Frequency", "Type"], c: 2 },
+      { name: "Room 10: Final Door", q: "Which is a cardiovascular activity?", a: ["Stretching", "Running", "Sleeping", "Gaming"], c: 1 }
+    ];
+
+    let roomIndex = 0;
+
+    const roomDiv = document.getElementById('room');
+    const gameDiv = document.getElementById('game');
+    const statusDiv = document.getElementById('status');
+
+    function loadRoom() {
+      if (roomIndex >= rooms.length) {
+        gameDiv.innerHTML = "<div class='win'>🎉 You Escaped the Health Room! 🎉</div>";
+        roomDiv.textContent = "";
+        return;
+      }
+
+      const r = rooms[roomIndex];
+      roomDiv.textContent = r.name;
+      statusDiv.textContent = "";
+
+      gameDiv.innerHTML = `
+        <div class="question">${r.q}</div>
+        <div class="answers">
+          ${r.a.map((ans, i) => `<button onclick=\"check(${i})\">${ans}</button>`).join('')}
+        </div>
+      `;
+    }
+
+    function check(choice) {
+      if (choice === rooms[roomIndex].c) {
+        statusDiv.textContent = "Correct! The door unlocks...";
+        roomIndex++;
+        setTimeout(loadRoom, 700);
+      } else {
+        statusDiv.innerHTML = "<span class='fail'>Wrong answer! Try again.</span>";
+      }
+    }
+
+    loadRoom();
+  </script>
+</body>
+</html>
